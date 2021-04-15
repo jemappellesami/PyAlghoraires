@@ -13,7 +13,7 @@ AVANT D'EXECUTER, ASSUREZ VOUS QUE :
 
 La sortie du programme est une vingtaine de fichiers nommés "final_xx.csv" qui correspondent aux horaires calculés avec un score pour chaque horaire.
 """
-cours = "Automatique"
+cours = "Instrumentation"
 cours += "/"
 test = 0
 
@@ -92,7 +92,7 @@ class Student:
             return 50
         else:
             self.isHappy = False
-            return -100
+            return -200
 
     def whichDate(self):
         if self.allowedDate == self.date1:
@@ -509,7 +509,7 @@ def makeNewGenFromPopulation(population, nToSelect, genSize, percentToMutate):
 
 def routine(initialPopulation, nIterations, nToSelect, sizeOfGens, mutation, diffToConverge):
     """Considère une population de départ, et construit des générations futures jusqu'à convergence ou arrêt de l'algorithme.
-    Construit aussi le dossier "out" qui sera remplis d'horaires une fois que l'algorithme aura effectué 1/4 de ses itérations.
+    Construit aussi le dossier "out" qui sera remplis d'horaires.
     Il met dans un même dossier tous les horaires qui ont le même score.
 
     L'algorithme garde aussi en mémoire l'horaire avec le plus grand score.
@@ -534,7 +534,9 @@ def routine(initialPopulation, nIterations, nToSelect, sizeOfGens, mutation, dif
     while (n < nIterations and convergence == False):
 
         newPop = makeNewGenFromPopulation(initialPopulation, nToSelect, sizeOfGens, mutation)
-
+        for chrom in newPop :
+            if(chrom.verifyOccupation(maxOccupation) == False) :
+                print("AKHAAAAA")
         topChromosome = sorted(newPop, key=operator.attrgetter("score"), reverse=True)[0]
         topChromosome.score = topChromosome.computeScore()
         # TODO : reconnaitre un maximum et le sauvegarder
@@ -543,14 +545,11 @@ def routine(initialPopulation, nIterations, nToSelect, sizeOfGens, mutation, dif
         if (newEval >= maxScore * 1):  # Ex : 19500/20000
             convergence = True
 
-        # Sauvegarde dans "out/" si au moins 1/4 des itérations
-        if n > nIterations / 4:
-
-            if newEval not in sameScore.keys() :
-                sameScore[newEval] = 0
-            if(sameScore[newEval] == 0) :
-                topChromosome.save("{}out/score{}.csv".format(cours,newEval))
-            sameScore[newEval] += 1
+        if newEval not in sameScore.keys() :
+            sameScore[newEval] = 0
+        if(sameScore[newEval] == 0) :
+            topChromosome.save("{}out/score{}.csv".format(cours,newEval))
+        sameScore[newEval] += 1
         """
         Analyzing convergence. Increase mutation in case of convergence.
         Decreases mutation in case of different generations for 5 generations straight.
@@ -590,7 +589,7 @@ newPop = makeNewGenFromPopulation(population, 10, 100, 0.2)
 # Paramètres
 nIterations = 100
 nToSelect = 10
-sizeOfGens = 50
+sizeOfGens = 500
 mutationFactor = 0.2
 diffToConverge = 5
 
