@@ -13,7 +13,7 @@ AVANT D'EXECUTER, ASSUREZ VOUS QUE :
 
 La sortie du programme est une vingtaine de fichiers nommés "final_xx.csv" qui correspondent aux horaires calculés avec un score pour chaque horaire.
 """
-cours = "Instrumentation"
+cours = "Automatique"
 cours += "/"
 test = 0
 
@@ -110,14 +110,18 @@ Un chromosome est une liste d'étudiants pour lesquels on a attribué un horaire
 Un chromosome est une "alternative" une proposition de solution au problème.
 Donc pour calculer le score de ce chromosome, qui est l'appréciation globale de l'attribution d'horaires, on calcule le score par étudiant (cf. classe student)
 """
-
-
 class Chromosome:
     def __init__(self, studentList=[], file=""):
         self.occupation = dict()
 
         if file == "":
             self.studentList = studentList
+            for stud in studentList :
+                allowedDate = stud.allowedDate
+                if (allowedDate not in self.occupation.keys()):
+                    self.occupation[allowedDate] = 0
+                self.occupation[allowedDate] += 1
+
             self.score = self.computeScore()
         else:  # constructeur à partir d'un fichier
             self.studentList = []
@@ -151,7 +155,10 @@ class Chromosome:
         return score
 
     def copy(self):
-        return Chromosome(self.studentList.copy())
+        newList =[]
+        for student in self.studentList :
+            newList.append(student.copy())
+        return Chromosome(studentList=newList)
 
     def save(self, fileName):
         intro = "score : {}/{} (max.), date prévue, date1, date2, date3, date préf?\n".format(self.computeScore(),
@@ -387,6 +394,7 @@ def mutatePopulation(population, nToMutate):
 
     for i in range(int(nToMutate)):
         chrom = sortedPop[i].copy()
+
         sortedPop[i] = mutation(chrom)
 
     return sortedPop
@@ -485,9 +493,7 @@ def makeNewGenFromPopulation(population, nToSelect, genSize, percentToMutate):
 
         # Si le cross over a réussi (cf. le "return False" dans le cross over) alors on l'ajoute, sinon on réessaye
         if children != False  :
-            for chrom in children:
-                if (chrom.verifyOccupation(maxOccupation) == False):
-                    print("AAAAh")
+
             child = children[whichChild - 1]
             newPop.append(child)
             nChildren += 1
@@ -497,9 +503,7 @@ def makeNewGenFromPopulation(population, nToSelect, genSize, percentToMutate):
 
     """
     nToMutate = percentToMutate * popSize
-
     newPop = mutatePopulation(newPop, nToMutate)
-
     return newPop
 
 
@@ -530,9 +534,9 @@ def routine(initialPopulation, nIterations, nToSelect, sizeOfGens, mutation, dif
     while (n < nIterations and convergence == False):
 
         newPop = makeNewGenFromPopulation(initialPopulation, nToSelect, sizeOfGens, mutation)
+
         topChromosome = sorted(newPop, key=operator.attrgetter("score"), reverse=True)[0]
         topChromosome.score = topChromosome.computeScore()
-
         # TODO : reconnaitre un maximum et le sauvegarder
         newEval = topChromosome.score
         print("Itération {} : score {}/{}".format(n, newEval, maxScore))
