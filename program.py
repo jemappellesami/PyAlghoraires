@@ -13,12 +13,12 @@ AVANT D'EXECUTER, ASSUREZ VOUS QUE :
 
 La sortie du programme est une vingtaine de fichiers nommés "final_xx.csv" qui correspondent aux horaires calculés avec un score pour chaque horaire.
 """
-cours = "Instrumentation"
+cours = "Rechop"
 cours += "/"
 test = 0
 
 # A mettre a True quand on voudra continuer ses recherches
-load = False
+load = True
 
 
 files = ("{}preferences.csv".format(cours), "{}formatSession.csv".format(cours))
@@ -574,7 +574,6 @@ def routine(initialPopulation, nIterations, nToSelect, sizeOfGens, mutation, dif
     topChromosomes = otherSelection(newPop, 20)
     return topChromosomes
 
-
 if load :
     oldChroms = []
 
@@ -584,12 +583,12 @@ if load :
             oldChroms.append(Chromosome(file="{}/{}".format(dir,file)))
     population = oldChroms
 
-newPop = makeNewGenFromPopulation(population, 10, 100, 0.2)
+newPop = makeNewGenFromPopulation(population, len(population), 100, 0.2)
 
 # Paramètres
 nIterations = 100
-nToSelect = 10
-sizeOfGens = 500
+nToSelect = 100
+sizeOfGens = 800
 mutationFactor = 0.2
 diffToConverge = 5
 
