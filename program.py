@@ -13,7 +13,7 @@ AVANT D'EXECUTER, ASSUREZ VOUS QUE :
 
 La sortie du programme est une vingtaine de fichiers nommés "final_xx.csv" qui correspondent aux horaires calculés avec un score pour chaque horaire.
 """
-cours = "ELMC-Fluids"
+cours = "ELMC-Instru"
 cours += "/"
 test = 0
 
@@ -607,4 +607,8 @@ def run_algo():
         chrom.score = chrom.computeScore()
         chrom.save("{}out/final/score{}.csv".format(cours, chrom.score))
 
+run_algo()
+run_algo()
+run_algo()
+run_algo()
 run_algo()
