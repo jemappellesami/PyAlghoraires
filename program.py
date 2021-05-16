@@ -13,7 +13,7 @@ AVANT D'EXECUTER, ASSUREZ VOUS QUE :
 
 La sortie du programme est une vingtaine de fichiers nommés "final_xx.csv" qui correspondent aux horaires calculés avec un score pour chaque horaire.
 """
-cours = "Rechop"
+cours = "ELMC-Fluids"
 cours += "/"
 test = 0
 
@@ -92,7 +92,7 @@ class Student:
             return 50
         else:
             self.isHappy = False
-            return -200
+            return -500
 
     def whichDate(self):
         if self.allowedDate == self.date1:
@@ -534,9 +534,7 @@ def routine(initialPopulation, nIterations, nToSelect, sizeOfGens, mutation, dif
     while (n < nIterations and convergence == False):
 
         newPop = makeNewGenFromPopulation(initialPopulation, nToSelect, sizeOfGens, mutation)
-        for chrom in newPop :
-            if(chrom.verifyOccupation(maxOccupation) == False) :
-                print("AKHAAAAA")
+
         topChromosome = sorted(newPop, key=operator.attrgetter("score"), reverse=True)[0]
         topChromosome.score = topChromosome.computeScore()
         # TODO : reconnaitre un maximum et le sauvegarder
@@ -587,7 +585,7 @@ newPop = makeNewGenFromPopulation(population, len(population), 100, 0.2)
 
 # Paramètres
 nIterations = 100
-nToSelect = 100
+nToSelect = 50
 sizeOfGens = 800
 mutationFactor = 0.2
 diffToConverge = 5
