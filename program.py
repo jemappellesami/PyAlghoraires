@@ -13,12 +13,13 @@ AVANT D'EXECUTER, ASSUREZ VOUS QUE :
 
 La sortie du programme est une vingtaine de fichiers nommés "final_xx.csv" qui correspondent aux horaires calculés avec un score pour chaque horaire.
 """
-cours = "ELMC-Instru"
+cours = "Rechop"
 cours += "/"
 test = 0
 
 # A mettre a True quand on voudra continuer ses recherches
 load = True
+
 
 
 files = ("{}preferences.csv".format(cours), "{}formatSession.csv".format(cours))
@@ -585,8 +586,8 @@ newPop = makeNewGenFromPopulation(population, len(population), 100, 0.2)
 
 # Paramètres
 nIterations = 100
-nToSelect = 50
-sizeOfGens = 800
+nToSelect = 10
+sizeOfGens = 500
 mutationFactor = 0.2
 diffToConverge = 5
 
